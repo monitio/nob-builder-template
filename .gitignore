@@ -4,11 +4,11 @@
 # nob-building specific
 
 # linux
-./builder/nob
-./builder/nob.old
+builder/nob
+builder/nob.old
 
 # windows
-./nob.exe
-./nob.exe.old
-./builder/nob.exe
-./builder/nob.exe.old
+nob.exe
+nob.exe.old
+builder/nob.exe
+builder/nob.exe.old
