@@ -1,2 +1,2 @@
-# nob-builder-template
-A template for building C projects using the nob.h builder.
+# [nob](https://github.com/tsoding/nob.h)-builder template project
+This is a quick template project for [nob.h](https://github.com/tsoding/nob.h) . Use it for making C projects.

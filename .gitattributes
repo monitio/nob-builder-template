@@ -1,0 +1,14 @@
+# changes batch to be visable on the github capsule
+*.bat lnguist-detectable
+
+# changes windows executables to be visable on the github capsule
+*.exe linguist-detectable
+
+# changes markdown to be visable on the github capsule
+*.md linguist-detectable
+
+# changes c to be visable on the github capsule
+*.c linguist-detectable
+
+# changes h to be visable on the github capsule
+*.h linguist-detectable
