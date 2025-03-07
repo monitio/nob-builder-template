@@ -4,6 +4,8 @@
 # nob-building specific
 
 # linux
+nob
+nob.old
 builder/nob
 builder/nob.old
 
