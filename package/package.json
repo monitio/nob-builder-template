@@ -1,13 +1,10 @@
 {
   "name": "create-nobuild",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Make C projects easily with nob.h instead of CMake.",
-  "main": "./cli.js",
+  "main": "./bin/setup.js",
   "bin": {
-    "create-nobuild": "./cli.js"
-  },
-  "scripts": {
-    "postinstall": "echo 'Nobuild CLI installed!'"
+    "create-nobuild": "./bin/setup.js"
   },
   "dependencies": {
     "simple-git": "^3.27.0"
@@ -20,5 +17,13 @@
   ],
   "author": "James Beans",
   "license": "GPL-3.0-only",
-  "type": "commonjs"
+  "type": "commonjs",
+  "homepage": "https://github.com/monitio/nob-builder-template",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monitio/nob-builder-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/monitio/nob-builder-template/issues"
+  }
 }

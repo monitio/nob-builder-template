@@ -19,11 +19,13 @@ git.clone(repoUrl, targetDir)
 
     if (fs.existsSync(packageDir)) {
       fs.rmSync(packageDir, { recursive: true, force: true });
-      console.log('"package" folder deleted successfully!');
+      process.exit(0);
     } else {
       console.log('"package" folder not found, nothing to delete.');
+      process.exit(0);
     }
   })
   .catch((err) => {
-    console.error('Failed to clone the repository:', err);
+    console.error('Failed to clone the repository.\n\nerror:\n\n', err);
+    process.exit(1);
   });
