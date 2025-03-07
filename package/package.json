@@ -1,6 +1,6 @@
 {
   "name": "create-nobuild",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Make C projects easily with nob.h instead of CMake.",
   "main": "./cli.js",
   "bin": {
