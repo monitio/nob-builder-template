@@ -1,0 +1,24 @@
+{
+  "name": "create-nobuild",
+  "version": "1.0.3",
+  "description": "Make C projects easily with nob.h instead of CMake.",
+  "main": "./cli.js",
+  "bin": {
+    "create-nobuild": "./cli.js"
+  },
+  "scripts": {
+    "postinstall": "echo 'Nobuild CLI installed!'"
+  },
+  "dependencies": {
+    "simple-git": "^3.27.0"
+  },
+  "keywords": [
+    "C", "c", "CLI", "cli",
+    "template", "template-project",
+    "nob-h", "nob-c",
+    "nobuild", "nobuilder"
+  ],
+  "author": "James Beans",
+  "license": "GPL-3.0-only",
+  "type": "commonjs"
+}

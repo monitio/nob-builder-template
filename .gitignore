@@ -14,3 +14,10 @@ nob.exe
 nob.exe.old
 builder/nob.exe
 builder/nob.exe.old
+
+# package specific
+
+node_modules
+package-lock.json
+package/node_modules
+package/package-lock.json
