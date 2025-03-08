@@ -16,8 +16,8 @@ This is a quick template project for [nob.h](https://github.com/tsoding/nob.h) .
 
 Start using this by:
 1. Run the package:
-  - [NPM](https://www.npmjs.com/package/create-nobuild): `npm create nobuild@latest`
-  - [Yarn](https://yarnpkg.com/package?q=create-nobuild&name=create-nobuild): `yarn create nobuild@latest`
+  - [NPM](https://www.npmjs.com/package/create-nobuild): `npx create-nobuild@latest`
+  - [Yarn](https://yarnpkg.com/package?q=create-nobuild&name=create-nobuild): `yarn create nobuild`
   - [PNPM](https://pnpm.io/): `pnpm create nobuild@latest`
 2. Go into the `nob-builder-template` folder by: `cd nob-builder-template`
 3. Run the build file:
