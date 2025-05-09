@@ -1,11 +1,11 @@
 {
   "name": "create-nobuild",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Make C projects easily with nob.h instead of CMake.",
-  "main": "./bin/setup.js",
+  "main": "./src/setup.js",
   "private": false,
   "bin": {
-    "create-nobuild": "bin/setup.js"
+    "create-nobuild": "src/setup.js"
   },
   "dependencies": {
     "simple-git": "^3.27.0"
