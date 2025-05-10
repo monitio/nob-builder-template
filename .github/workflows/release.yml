@@ -4,8 +4,6 @@ on:
   release:
     types:
       - published
-      #- released       # fires when a draft (pre-)release is published
-      #- prereleased    # covers pre-releases flipped to “published”
 
 permissions:
   contents: read
@@ -28,22 +26,31 @@ jobs:
         run: npm install
         working-directory: ./package
 
+      # Publish unscoped to npmjs.org
       - name: Create .npmrc for npmjs.org
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        working-directory: ./package
+        run: echo "registry=https://registry.npmjs.org/" > package/.npmrc
 
       - name: Publish to npmjs.org
         run: npm publish --access public
         working-directory: ./package
 
+      # Rename package.json & lockfile to scoped for GitHub Packages
+      - name: Scope package name for GitHub Packages
+        run: |
+          jq '.name = "@monitio/" + .name' package/package.json > package/tmp.json
+          mv package/tmp.json package/package.json
+          if [ -f package/package-lock.json ]; then \
+            jq '.name = "@monitio/" + .name' package/package-lock.json > package/tmp-lock.json; \
+            mv package/tmp-lock.json package/package-lock.json; \
+          fi
+
       - name: Create .npmrc for GitHub Packages
-        run: echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > .npmrc
+        run: |
+          echo "@monitio:registry=https://npm.pkg.github.com" > package/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> package/.npmrc
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: ./package
 
       - name: Publish to GitHub Packages
-        run: npm publish --registry https://npm.pkg.github.com
+        run: npm publish --access public
         working-directory: ./package
