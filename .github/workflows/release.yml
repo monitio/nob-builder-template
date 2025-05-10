@@ -1,0 +1,49 @@
+name: Publish Package
+
+on:
+  release:
+    types:
+      - published
+      #- released       # fires when a draft (pre-)release is published
+      #- prereleased    # covers pre-releases flipped to “published”
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23.7.0'
+
+      - name: Install npm dependencies
+        run: npm install
+        working-directory: ./package
+
+      - name: Create .npmrc for npmjs.org
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        working-directory: ./package
+
+      - name: Publish to npmjs.org
+        run: npm publish --access public
+        working-directory: ./package
+
+      - name: Create .npmrc for GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > .npmrc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./package
+
+      - name: Publish to GitHub Packages
+        run: npm publish --registry https://npm.pkg.github.com
+        working-directory: ./package

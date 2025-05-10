@@ -1,0 +1,58 @@
+name: Draft New Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write     # needed to create/update releases
+  id-token: write     # for semantic-release auth if required
+  packages: write     # for any semantic-release plugins that touch packages
+
+jobs:
+  prepare-and-draft:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out your code
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # 3. Get short (7 characters long) commit SHA code
+      - name: Extract short SHA
+        id: extract_sha
+        shell: bash
+        run: |
+          full_sha="${{ github.sha }}"
+          short_sha="${full_sha:0:7}"
+          echo "short_sha=$short_sha" >> $GITHUB_OUTPUT
+
+      # 4. Extract only the commit description (body)
+      - name: Extract commit description
+        id: extract_desc
+        shell: bash
+        run: |
+          desc=$(git log -1 --pretty=%B | tail -n +3)
+          echo "commit_description<<EOF" >> $GITHUB_OUTPUT
+          echo "$desc" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      # 5. Create the draft pre-release with template
+      - name: Draft GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: v
+          release_name: v
+          draft: true
+          prerelease: true
+          body: |
+            v | ${{ steps.extract_sha.outputs.short_sha }}
+            **Triggered by committer:** @${{ github.actor }}
+
+            ---
+
+            # What's changed?
+            ${{ steps.extract_desc.outputs.commit_description }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -14,18 +14,29 @@ git.clone(repoUrl, targetDir)
   .then(() => {
     console.log('Repository cloned successfully!');
 
-    // After cloning, remove the "package" folder
-    const packageDir = path.join(targetDir, 'package');
+    // List of folders to remove
+    const dirsToRemove = [
+      path.join(targetDir, 'package'),
+      path.join(targetDir, '.github'),
+      path.join(targetDir, '.git')
+    ];
 
-    if (fs.existsSync(packageDir)) {
-      fs.rmSync(packageDir, { recursive: true, force: true });
-      process.exit(0);
-    } else {
-      console.log('"package" folder not found, nothing to delete.');
-      process.exit(0);
-    }
+    // Process each directory
+    dirsToRemove.forEach(dir => {
+      const name = path.basename(dir);
+      if (fs.existsSync(dir)) {
+        console.log(`Removing "${name}"...`);
+        fs.rmSync(dir, { recursive: true, force: true });
+      } else {
+        console.log(`"${name}" folder not found, nothing to delete.`);
+      }
+    });
+
+    // Exit once after all directories have been handled
+    console.log('Cleanup complete. Exiting.');
+    process.exit(0);
   })
-  .catch((err) => {
+  .catch(err => {
     console.error('Failed to clone the repository.\n\nerror:\n\n', err);
     process.exit(1);
   });
