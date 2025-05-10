@@ -14,55 +14,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2) Setup Node for npmjs.org (root-level)
-      - name: Setup Node.js for npmjs.org
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '23.7.0'
-          registry-url: 'https://registry.npmjs.org'
 
-      # 3) Authenticate against npmjs.org (root-level .npmrc)
-      - name: Authenticate with npmjs.org
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - name: Install npm dependencies
+        run: npm install
+        working-directory: ./package
+
+      - name: Create .npmrc for npmjs.org
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        working-directory: ./package
 
-      # 4) Install & publish to npmjs.org (inside package/)
-      - name: Install & Publish to npmjs.org
+      - name: Publish to npmjs.org
+        run: npm publish --access public
+        working-directory: ./package
+
+      # NEW: inject @monitio scope
+      - name: Scope package name to @monitio/create-nobuild
         working-directory: ./package
         run: |
-          npm install
-          npm publish --access public
+          # 1) Rewrite package.json "name" field
+          node -e "
+            const fs = require('fs');
+            const pkg = require('./package.json');
+            pkg.name = '@monitio/create-nobuild';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+          # 2) Ensure scoped registry entry in .npmrc
+          echo "@monitio:registry=https://npm.pkg.github.com/" >> .npmrc
 
-      # 5) Rewrite package name to scoped for GitHub Packages (inside package/)
-      - name: Scope package name for GitHub Packages
-        working-directory: ./package
-        run: |
-          jq '.name = "@monitio/" + .name' package.json > tmp.json && mv tmp.json package.json
-          if [ -f package-lock.json ]; then
-            jq '.name = "@monitio/" + .name' package-lock.json > tmp-lock.json && mv tmp-lock.json package-lock.json
-          fi
-
-      # 6) Setup Node for GitHub Packages (root-level)
-      - name: Setup Node.js for GitHub Packages
-        uses: actions/setup-node@v3
-        with:
-          node-version: '23.7.0'
-          registry-url: 'https://npm.pkg.github.com'
-
-      # 7) Authenticate against GitHub Packages (root-level .npmrc)
-      - name: Authenticate with GitHub Packages
-        run: echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc
+      - name: Create .npmrc for GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > .npmrc
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # 8) Publish to GitHub Packages (inside package/)
-      - name: Publish to GitHub Packages
         working-directory: ./package
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to GitHub Packages
+        run: npm publish --registry https://npm.pkg.github.com
+        working-directory: ./package
