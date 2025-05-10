@@ -28,7 +28,8 @@ jobs:
 
       # Publish unscoped to npmjs.org
       - name: Create .npmrc for npmjs.org
-        run: echo "registry=https://registry.npmjs.org/" > package/.npmrc
+        run: echo "registry=https://registry.npmjs.org/" > .npmrc
+        working-directory: ./package
 
       - name: Publish to npmjs.org
         run: npm publish --access public
