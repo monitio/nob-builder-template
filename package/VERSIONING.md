@@ -1,4 +1,4 @@
-v1.0.0-release | [cea8d98](https://github.com/monitio/SemVer-Typing/commit/cea8d985d1485bbafd1f2129fd143720dbd7b848)
+v1.1.0-release.declaration | [dc61227](https://github.com/monitio/SemVer-Typing/commit/dc61227efadac2cc18ab0a5eaf5e40c4847564b8)
 
 Triggered by committer: [@james-beans](https://github.com/james-beans)
 
@@ -40,8 +40,9 @@ When I mean "**some cases**" I mean specifically in values you cannot create you
 
 These are the supported values that are allowed:
 - **Type** (pick a singular one and no custom options)
-	- `release`  - for official releases
-	- `testing` - for pre-releases or test builds
+	- `release` - for official releases
+	- `prerelease` - for pre-releases
+	- `testing` - for tests or test builds
 - **Indicator** (custom options are supported)
 	- `build-format`:
 		- `asm` - Assembly build
@@ -51,6 +52,8 @@ These are the supported values that are allowed:
 		- `binary` - Binary executable build
 		- `custom` - Any other custom build identifier / type
 		- `SRC`/`src` - Plain source-code
+		- `declaration` - A reasoning declaration of anything (like this)
+		- `dts` - TypeScript declarations (`*.d.ts` files)
 	- `platform`:
 		- `Windows` - Any Windows OS type
 		- `Linux` - Any Linux distro / type
@@ -58,6 +61,7 @@ These are the supported values that are allowed:
 		- `Darwin` - Any MacOS / iOS version
 		- `iPadOS` - Any version of iPadOS
 		- `iPhone`/`iOS` - Any version of iOS on the iPhone
+		- `multiplatform` - Builds to multiple platforms
 	- `status`:
 		- `working` - Functional / passing tests
 		- `broken` - Failing or non-functional
